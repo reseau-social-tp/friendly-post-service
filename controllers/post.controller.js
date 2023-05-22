@@ -10,13 +10,13 @@ module.exports.readPost = (req, res) => {
 };
 
 module.exports.createPost = async (req, res) => {
-    let images = [];
-    if(req.files)
-    {
-        req.files.forEach(file => {
-        images.push('/images/' + file.filename);
-        });
-    }
+    let images = [req.body?.image];
+    // if(req.files)
+    // {
+    //     req.files.forEach(file => {
+    //     images.push('/images/' + file.filename);
+    //     });
+    // }
   const newPost = new PostModel({
     pictures: images,
     posterId: req.body.posterId,

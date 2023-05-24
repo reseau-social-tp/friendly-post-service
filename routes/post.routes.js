@@ -5,6 +5,7 @@ const multer = require('../middleware/upload');
 router.get('/', postController.readPost);
 router.post('/', multer, postController.createPost);
 router.put('/:id', multer, postController.updatePost);
+router.get('/:id', postController.getPost);
 router.delete('/:id', postController.deletePost);
 router.patch('/like-post/:id', postController.likePost);
 router.patch('/unlike-post/:id', postController.unlikePost);

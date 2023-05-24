@@ -9,6 +9,16 @@ module.exports.readPost = (req, res) => {
   }).sort({ createdAt: -1});
 };
 
+module.exports.getPost = async (req, res) => {
+    try {
+        const post = await PostModel.findById(req.params.id)
+        if(!post) return res.status(400).json({msg: "Post does not exist."})
+        
+        res.json({post})
+    } catch (err) {
+        return res.status(500).json({msg: err.message})
+    }
+},
 module.exports.createPost = async (req, res) => {
     let images = [req.body?.image];
     // if(req.files)
@@ -78,7 +88,7 @@ module.exports.likePost = async (req, res) =>{
         PostModel.findByIdAndUpdate(
             req.params.id,
             {
-                $addToSet: {likers: req.body.id}
+                $addToSet: {likers: req.body.userId}
             },
             {new: true},
             (err, docs) => {
@@ -86,7 +96,7 @@ module.exports.likePost = async (req, res) =>{
             }
         );
         UserModel.findByIdAndUpdate(
-            req.body.id,
+            req.body.userId,
             {
                 $addToSet : { likes: req.params.id}
             },
@@ -111,7 +121,8 @@ module.exports.unlikePost = async (req, res) =>{
         PostModel.findByIdAndUpdate(
             req.params.id,
             {
-                $pull: {likers: req.body.id}
+                
+                $pull: {likers: req.body.userId}
             },
             {new: true},
             (err, docs) => {
@@ -119,7 +130,7 @@ module.exports.unlikePost = async (req, res) =>{
             }
         );
         UserModel.findByIdAndUpdate(
-            req.body.id,
+            req.body.userId,
             {
                 $pull : { likes: req.params.id}
             },

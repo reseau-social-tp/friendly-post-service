@@ -2,7 +2,8 @@ const router = require('express').Router();
 const postController = require('../controllers/post.controller');
 const multer = require('../middleware/upload');
 
-router.get('/', postController.readPost);
+router.get('/:following', postController.readPost);
+router.get('/user/:id', postController.readPostsOfUser);
 router.post('/', multer, postController.createPost);
 router.put('/:id', multer, postController.updatePost);
 router.get('/:id', postController.getPost);

@@ -2,13 +2,25 @@ const PostModel = require("../models/post.model");
 
 const ObjectID = require("mongoose").Types.ObjectId;
 
-module.exports.readPost = (req, res) => {
-  PostModel.find((err, docs) => {
-    if (!err) res.status(200).send(docs);
-    else console.log(`Error to get data ${err}`);
-  }).sort({ createdAt: -1});
+module.exports.readPost = async (req, res) => {
+    try {
+        const posts = await PostModel.find({posterId: { $in: req.params.following.split(",") }}).sort({ createdAt: -1})
+        res.json({posts})
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({msg: err.message})
+    }
 };
 
+module.exports.readPostsOfUser = async (req, res) => {
+    try {
+        const posts = await PostModel.find({posterId: req.params.id}).sort({ createdAt: -1})
+        res.json({posts})
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({msg: err.message})
+    }
+},
 module.exports.getPost = async (req, res) => {
     try {
         const post = await PostModel.findById(req.params.id)

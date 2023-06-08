@@ -6,7 +6,7 @@ router.get('/:following', postController.readPost);
 router.get('/user/:id', postController.readPostsOfUser);
 router.post('/', multer, postController.createPost);
 router.put('/:id', multer, postController.updatePost);
-router.get('/:id', postController.getPost);
+router.get('/post/:id', postController.getPost);
 router.delete('/:id', postController.deletePost);
 router.patch('/like-post/:id', postController.likePost);
 router.patch('/unlike-post/:id', postController.unlikePost);
